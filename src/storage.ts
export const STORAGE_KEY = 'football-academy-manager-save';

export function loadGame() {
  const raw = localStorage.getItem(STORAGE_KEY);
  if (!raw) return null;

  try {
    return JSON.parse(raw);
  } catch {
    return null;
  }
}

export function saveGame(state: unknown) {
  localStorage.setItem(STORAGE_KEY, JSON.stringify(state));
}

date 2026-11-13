@@ -1,0 +1,516 @@
+import type { BuildingInfo, GameState, Mission, Player, Position, Rival } from './types';
+
+export const BUILDINGS: Record<string, BuildingInfo> = {
+  trainingGround: {
+    key: 'trainingGround',
+    name: 'Campo de entrenamiento',
+    description: 'Aumenta la mejora técnica y la intensidad del trabajo diario.',
+    baseCost: 600,
+    income: 60,
+    bonus: 2
+  },
+  stadium: {
+    key: 'stadium',
+    name: 'Estadio',
+    description: 'Mejora la capacidad, la recaudación y la imagen del club.',
+    baseCost: 1200,
+    income: 150,
+    bonus: 4
+  },
+  gym: {
+    key: 'gym',
+    name: 'Gimnasio',
+    description: 'Fortalece la intensidad física y acelera la recuperación.',
+    baseCost: 500,
+    income: 55,
+    bonus: 2
+  },
+  medical: {
+    key: 'medical',
+    name: 'Centro médico',
+    description: 'Reduce lesiones y mejora la recuperación tras partidos.',
+    baseCost: 700,
+    income: 70,
+    bonus: 3
+  },
+  youthAcademy: {
+    key: 'youthAcademy',
+    name: 'Academia juvenil',
+    description: 'Descubre talentos y genera promesas para el futuro.',
+    baseCost: 900,
+    income: 80,
+    bonus: 3
+  },
+  residence: {
+    key: 'residence',
+    name: 'Residencia de jugadores',
+    description: 'Mejora la calidad del entorno y la preparación de la plantilla.',
+    baseCost: 800,
+    income: 75,
+    bonus: 2
+  },
+  admin: {
+    key: 'admin',
+    name: 'Oficinas administrativas',
+    description: 'Optimiza la gestión del club y la negociación con patrocinadores.',
+    baseCost: 650,
+    income: 95,
+    bonus: 2
+  },
+  tacticalCenter: {
+    key: 'tacticalCenter',
+    name: 'Centro de análisis',
+    description: 'Refuerza la planificación táctica, detalles y preparación rival.',
+    baseCost: 1000,
+    income: 120,
+    bonus: 5
+  },
+  shop: {
+    key: 'shop',
+    name: 'Tienda oficial',
+    description: 'Aumenta los ingresos por merchandising y marca.',
+    baseCost: 400,
+    income: 90,
+    bonus: 1
+  },
+  commercial: {
+    key: 'commercial',
+    name: 'Instalaciones comerciales',
+    description: 'Abre nuevas fuentes de ingresos y patrocinio.',
+    baseCost: 1100,
+    income: 140,
+    bonus: 3
+  }
+};
+
+export const INITIAL_PLAYERS: Omit<Player, 'id'>[] = [
+  {
+    name: 'Mateo',
+    age: 18,
+    nationality: 'España',
+    position: 'DEF',
+    rating: 61,
+    potential: 79,
+    pace: 70,
+    stamina: 68,
+    strength: 73,
+    passing: 60,
+    dribbling: 62,
+    shooting: 38,
+    defense: 72,
+    tactics: 65,
+    morale: 71,
+    fitness: 78,
+    experience: 7,
+    marketValue: 180000,
+    salary: 500,
+    injured: 0,
+    focus: 'Defensa'
+  },
+  {
+    name: 'Daniel',
+    age: 19,
+    nationality: 'Argentina',
+    position: 'MED',
+    rating: 63,
+    potential: 82,
+    pace: 72,
+    stamina: 73,
+    strength: 60,
+    passing: 71,
+    dribbling: 67,
+    shooting: 56,
+    defense: 59,
+    tactics: 74,
+    morale: 70,
+    fitness: 80,
+    experience: 8,
+    marketValue: 220000,
+    salary: 550,
+    injured: 0,
+    focus: 'Pase'
+  },
+  {
+    name: 'Iker',
+    age: 17,
+    nationality: 'España',
+    position: 'DEL',
+    rating: 60,
+    potential: 85,
+    pace: 77,
+    stamina: 66,
+    strength: 58,
+    passing: 58,
+    dribbling: 75,
+    shooting: 62,
+    defense: 32,
+    tactics: 68,
+    morale: 72,
+    fitness: 75,
+    experience: 5,
+    marketValue: 240000,
+    salary: 520,
+    injured: 0,
+    focus: 'Ataque'
+  },
+  {
+    name: 'Sergio',
+    age: 20,
+    nationality: 'Uruguay',
+    position: 'MED',
+    rating: 65,
+    potential: 80,
+    pace: 68,
+    stamina: 76,
+    strength: 64,
+    passing: 73,
+    dribbling: 66,
+    shooting: 58,
+    defense: 62,
+    tactics: 72,
+    morale: 74,
+    fitness: 82,
+    experience: 12,
+    marketValue: 260000,
+    salary: 600,
+    injured: 0,
+    focus: 'Control'
+  },
+  {
+    name: 'Adrián',
+    age: 18,
+    nationality: 'Brasil',
+    position: 'DEL',
+    rating: 62,
+    potential: 83,
+    pace: 79,
+    stamina: 71,
+    strength: 57,
+    passing: 62,
+    dribbling: 76,
+    shooting: 64,
+    defense: 35,
+    tactics: 66,
+    morale: 73,
+    fitness: 77,
+    experience: 6,
+    marketValue: 250000,
+    salary: 550,
+    injured: 0,
+    focus: 'Desborde'
+  },
+  {
+    name: 'Lucas',
+    age: 21,
+    nationality: 'Portugal',
+    position: 'POR',
+    rating: 66,
+    potential: 80,
+    pace: 50,
+    stamina: 72,
+    strength: 68,
+    passing: 61,
+    dribbling: 45,
+    shooting: 20,
+    defense: 73,
+    tactics: 72,
+    morale: 75,
+    fitness: 79,
+    experience: 14,
+    marketValue: 300000,
+    salary: 650,
+    injured: 0,
+    focus: 'Portería'
+  }
+];
+
+export const RIVAL_NAMES = [
+  'Celta Norte',
+  'Atlético Mar',
+  'Real Costa',
+  'Sporting Valle',
+  'Burgos FC',
+  'Lobos de Almería'
+];
+
+export const defaultMissions = (): Mission[] => [
+  {
+    id: 'friendly-win',
+    title: 'Primera victoria',
+    description: 'Gana un amistoso.',
+    goal: 1,
+    progress: 0,
+    reward: 400,
+    type: 'wins',
+    completed: false
+  },
+  {
+    id: 'money-2000',
+    title: 'Economía de base',
+    description: 'Acumula 2000 € en la caja.',
+    goal: 2000,
+    progress: 0,
+    reward: 600,
+    type: 'money',
+    completed: false
+  },
+  {
+    id: 'rating-70',
+    title: 'Formar talento',
+    description: 'Eleva la valoración media del equipo a 70.',
+    goal: 70,
+    progress: 0,
+    reward: 800,
+    type: 'rating',
+    completed: false
+  },
+  {
+    id: 'build-training',
+    title: 'Ampliar instalaciones',
+    description: 'Mejora el campo de entrenamiento al nivel 2.',
+    goal: 2,
+    progress: 0,
+    reward: 500,
+    type: 'build',
+    completed: false
+  },
+  {
+    id: 'training-session',
+    title: 'Trabajo duro',
+    description: 'Lanza un entrenamiento colectivo.',
+    goal: 1,
+    progress: 0,
+    reward: 350,
+    type: 'training',
+    completed: false
+  }
+];
+
+export function buildStartingState(clubName: string): GameState {
+  const players = INITIAL_PLAYERS.map((player, idx) => ({
+    ...player,
+    id: idx + 1
+  }));
+
+  const rivals: Rival[] = RIVAL_NAMES.map((name, index) => ({
+    id: index + 1,
+    name,
+    strength: 58 + index * 5,
+    style: index % 2 === 0 ? 'Presión alta' : 'Contraataque'
+  }));
+
+  return {
+    clubName,
+    day: 1,
+    money: 1850,
+    reputation: 1,
+    stadiumCapacity: 400,
+    matchHistory: [],
+    players,
+    rivals,
+    buildings: {
+      trainingGround: 1,
+      stadium: 1,
+      gym: 1,
+      medical: 1,
+      youthAcademy: 1,
+      residence: 1,
+      admin: 1,
+      tacticalCenter: 1,
+      shop: 1,
+      commercial: 1
+    },
+    missions: defaultMissions(),
+    logs: ['Academia creada con éxito. El proyecto ya está en marcha.']
+  };
+}
+
+export function getBuildingUpgradeCost(buildingKey: string, level: number): number {
+  const config = BUILDINGS[buildingKey];
+  if (!config) return 0;
+  return Math.round(config.baseCost * Math.pow(1.7, level - 1));
+}
+
+export function getClubAverageRating(players: Player[]): number {
+  return Math.round(players.reduce((sum, player) => sum + player.rating, 0) / players.length);
+}
+
+export function getPlayerOverall(player: Player): number {
+  return Math.round(
+    (player.pace +
+      player.stamina +
+      player.strength +
+      player.passing +
+      player.dribbling +
+      player.shooting +
+      player.defense +
+      player.tactics) /
+      8
+  );
+}
+
+export function calculateIncome(state: GameState): number {
+  const buildingBonus = Object.entries(state.buildings).reduce((total, [key, value]) => {
+    const building = BUILDINGS[key];
+    return total + (building ? building.income * value : 0);
+  }, 0);
+
+  const base = 280 + buildingBonus + state.reputation * 25;
+  return Math.round(base - state.players.reduce((total, player) => total + player.salary / 8, 0));
+}
+
+export function nextDayState(state: GameState): GameState {
+  const newState = JSON.parse(JSON.stringify(state)) as GameState;
+  newState.day += 1;
+  newState.money += calculateIncome(newState);
+
+  newState.players = newState.players.map((player) => {
+    const fitnessDelta = player.injured > 0 ? -8 : -3;
+    const nextFitness = Math.max(40, Math.min(100, player.fitness + fitnessDelta));
+    const nextMorale = Math.max(50, Math.min(100, player.morale + 2));
+
+    const nextPlayer = {
+      ...player,
+      fitness: nextFitness,
+      morale: nextMorale,
+      injured: Math.max(0, player.injured - 1)
+    };
+
+    nextPlayer.rating = getPlayerOverall(nextPlayer);
+    return nextPlayer;
+  });
+
+  newState.logs = [`Día ${newState.day}: ingresos del club actualizados.`, ...newState.logs].slice(0, 8);
+  return updateMissionProgress(newState);
+}
+
+export function updateMissionProgress(state: GameState): GameState {
+  const nextState = JSON.parse(JSON.stringify(state)) as GameState;
+  const avgRating = getClubAverageRating(nextState.players);
+
+  nextState.missions = nextState.missions.map((mission) => {
+    let progress = mission.progress;
+    switch (mission.type) {
+      case 'wins':
+        progress = nextState.matchHistory.filter((match) => match.result === 'W').length;
+        break;
+      case 'money':
+        progress = nextState.money;
+        break;
+      case 'rating':
+        progress = avgRating;
+        break;
+      case 'build':
+        progress = nextState.buildings.trainingGround;
+        break;
+      case 'training':
+        const trainingSessions = nextState.logs.filter((log) => log.toLowerCase().includes('entrenamiento')).length;
+        progress = trainingSessions;
+        break;
+      default:
+        progress = mission.progress;
+    }
+
+    const completed = progress >= mission.goal;
+    if (completed && !mission.completed) {
+      nextState.money += mission.reward;
+      nextState.logs = [`Misión completada: ${mission.title} (+${mission.reward} €)`, ...nextState.logs].slice(0, 8);
+    }
+
+    return {
+      ...mission,
+      progress,
+      completed: completed || mission.completed
+    };
+  });
+
+  return nextState;
+}
+
+export function trainPlayers(state: GameState, mode: 'individual' | 'collective'): GameState {
+  const nextState = JSON.parse(JSON.stringify(state)) as GameState;
+  const cost = mode === 'individual' ? 120 : 180;
+  if (nextState.money < cost) {
+    nextState.logs = ['No hay dinero suficiente para entrenar.']
+    return nextState;
+  }
+
+  nextState.money -= cost;
+  const selectedPlayers = [...nextState.players].sort((a, b) => b.morale - a.morale).slice(0, mode === 'individual' ? 2 : 3);
+
+  selectedPlayers.forEach((player) => {
+    const boost = mode === 'individual' ? 2 : 1;
+    const attrList: Array<keyof Player> = ['pace', 'stamina', 'passing', 'dribbling', 'shooting', 'defense', 'tactics'];
+    const attr = attrList[Math.floor(Math.random() * attrList.length)];
+    const value = player[attr] as number;
+    (player as any)[attr] = Math.min(99, value + boost);
+    player.morale = Math.min(100, player.morale + 4);
+    player.fitness = Math.min(100, player.fitness + 5);
+    player.experience += 2;
+    player.rating = getPlayerOverall(player);
+  });
+
+  nextState.logs = [`Entrenamiento ${mode === 'individual' ? 'individual' : 'colectivo'} realizado.`, ...nextState.logs].slice(0, 8);
+  return updateMissionProgress(nextState);
+}
+
+export function upgradeBuilding(state: GameState, key: string): GameState {
+  const nextState = JSON.parse(JSON.stringify(state)) as GameState;
+  const currentLevel = nextState.buildings[key] ?? 1;
+  const cost = getBuildingUpgradeCost(key, currentLevel + 1);
+
+  if (nextState.money < cost) {
+    nextState.logs = ['No hay presupuesto suficiente para mejorar esa instalación.'];
+    return nextState;
+  }
+
+  nextState.money -= cost;
+  nextState.buildings[key] = currentLevel + 1;
+  nextState.reputation += 1;
+  nextState.stadiumCapacity += key === 'stadium' ? 200 : 0;
+  nextState.logs = [`${BUILDINGS[key]?.name || 'Instalación'} mejorada al nivel ${nextState.buildings[key]}.`, ...nextState.logs].slice(0, 8);
+  return updateMissionProgress(nextState);
+}
+
+export function playFriendly(state: GameState, opponentName: string): GameState {
+  const nextState = JSON.parse(JSON.stringify(state)) as GameState;
+  const rival = nextState.rivals.find((item) => item.name === opponentName) ?? nextState.rivals[0];
+  const teamRating = getClubAverageRating(nextState.players) + nextState.buildings.tacticalCenter * 2 + nextState.buildings.trainingGround;
+  const opponentRating = rival.strength;
+
+  const ourGoals = Math.max(0, Math.round((teamRating - opponentRating) / 12 + Math.random() * 2.2 + 0.4));
+  const rivalGoals = Math.max(0, Math.round((opponentRating - teamRating) / 14 + Math.random() * 1.8));
+
+  const result: MatchRecord = {
+    id: Date.now(),
+    opponent: rival.name,
+    score: `${ourGoals}-${rivalGoals}`,
+    result: ourGoals > rivalGoals ? 'W' : ourGoals < rivalGoals ? 'L' : 'D',
+    day: nextState.day
+  };
+
+  nextState.matchHistory = [result, ...nextState.matchHistory].slice(0, 10);
+
+  if (result.result === 'W') {
+    nextState.money += 550;
+    nextState.logs = [`Victoria ante ${rival.name}: ${result.score}.`, ...nextState.logs].slice(0, 8);
+  } else if (result.result === 'D') {
+    nextState.money += 240;
+    nextState.logs = [`Empate frente a ${rival.name}: ${result.score}.`, ...nextState.logs].slice(0, 8);
+  } else {
+    nextState.money += 120;
+    nextState.logs = [`Derrota frente a ${rival.name}: ${result.score}.`, ...nextState.logs].slice(0, 8);
+  }
+
+  nextState.players = nextState.players.map((player) => {
+    const staminaChange = result.result === 'W' ? 4 : -2;
+    return {
+      ...player,
+      morale: Math.max(50, Math.min(100, player.morale + (result.result === 'W' ? 6 : 1))),
+      fitness: Math.max(45, Math.min(100, player.fitness + staminaChange)),
+      experience: player.experience + 5
+    };
+  });
+
+  return updateMissionProgress(nextState);
+}
