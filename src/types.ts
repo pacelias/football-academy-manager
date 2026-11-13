@@ -16,5 +16,5 @@ export interface Mission {
 export interface GameState {
   clubName: string; day: number; money: number; reputation: number; stadiumCapacity: number;
   matchHistory: MatchRecord[]; players: Player[]; rivals: Rival[]; buildings: Record<string, number>;
-  missions: Mission[]; logs: string[]; formation: Formation; lineup: number[];
+  missions: Mission[]; logs: string[]; formation: Formation; lineup: number[]; prospects: Player[];
 }

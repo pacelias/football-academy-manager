@@ -9,7 +9,7 @@ export function loadGame(): GameState | null {
     const players = game.players;
     const lineup = Array.isArray(game.lineup) ? game.lineup.filter((id) => players.some((p) => p.id === id)) : players.map((p) => p.id);
     for (const p of players) if (!lineup.includes(p.id)) lineup.push(p.id);
-    return { ...game, players, lineup, formation: game.formation ?? '4-4-2' } as GameState;
+    return { ...game, players, lineup, formation: game.formation ?? '4-4-2', prospects: Array.isArray(game.prospects) ? game.prospects : [] } as GameState;
   } catch { return null; }
 }
 export function saveGame(state: GameState): void {
